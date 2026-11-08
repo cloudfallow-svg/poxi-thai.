@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poxi Aprende Thai - Alfabeto y Pronunciación</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts: Sarabun & Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0b0c10;
+            color: #f3f4f6;
+        }
+        .thai-font {
+            font-family: 'Sarabun', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #111318;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2b2f3d;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #3f4459;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-[#0b0c10] text-slate-100 selection:bg-indigo-500 selection:text-white">
+
+    <!-- Top Navigation bar -->
+    <header class="sticky top-0 z-50 bg-[#111318]/90 backdrop-blur-md border-b border-[#1e2230] px-4 lg:px-8 py-3.5 flex items-center justify-between">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('dashboard')">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30 text-white font-bold text-xl thai-font">
+                ก
+            </div>
+            <div>
+                <h1 class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">Poxi Aprende Thai</h1>
+                <p class="text-xs text-slate-400 font-medium">Método fonético en español</p>
+            </div>
+        </div>
+
+        <!-- Desktop Nav Tabs -->
+        <nav class="hidden md:flex items-center space-x-1 bg-[#181b24] p-1.5 rounded-2xl border border-[#232736]">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center space-x-2 bg-indigo-600 text-white shadow-md shadow-indigo-600/20">
+                <i class="fa-solid fa-house-chimney"></i>
+                <span>Inicio</span>
+            </button>
+            <button onclick="switchTab('flashcards')" id="nav-flashcards" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center space-x-2 text-slate-400 hover:text-white hover:bg-[#202433]">
+                <i class="fa-solid fa-clone"></i>
+                <span>Flashcards</span>
+            </button>
+            <button onclick="switchTab('quiz')" id="nav-quiz" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center space-x-2 text-slate-400 hover:text-white hover:bg-[#202433]">
+                <i class="fa-solid fa-circle-question"></i>
+                <span>Quiz</span>
+            </button>
+            <button onclick="switchTab('explorer')" id="nav-explorer" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center space-x-2 text-slate-400 hover:text-white hover:bg-[#202433]">
+                <i class="fa-solid fa-table-cells"></i>
+                <span>Explorador</span>
+            </button>
+            <button onclick="switchTab('guide')" id="nav-guide" class="nav-btn px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center space-x-2 text-slate-400 hover:text-white hover:bg-[#202433]">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Guía en Español</span>
+            </button>
+        </nav>
+
+        <!-- Audio Test / Quick Actions -->
+        <div class="flex items-center space-x-3">
+            <button onclick="playAudio('สวัสดีค่ะ', 'th-TH')" class="hidden sm:flex items-center space-x-2 bg-[#1b1f2d] hover:bg-[#252b3d] border border-[#2b3145] px-3.5 py-2 rounded-xl text-xs font-medium text-indigo-300 transition shadow-sm">
+                <i class="fa-solid fa-volume-high"></i>
+                <span>Probar Audio Thai</span>
+            </button>
+            <div class="w-9 h-9 rounded-full bg-[#1b1f2d] border border-[#2b3145] flex items-center justify-center text-slate-300 font-semibold text-sm">
+                PX
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#111318]/95 backdrop-blur-md border-t border-[#1e2230] px-3 py-2 flex justify-around items-center">
+        <button onclick="switchTab('dashboard')" id="mob-nav-dashboard" class="mob-nav-btn flex flex-col items-center text-indigo-400 text-xs py-1 px-2 rounded-lg">
+            <i class="fa-solid fa-house-chimney text-base mb-0.5"></i>
+            <span>Inicio</span>
+        </button>
+        <button onclick="switchTab('flashcards')" id="mob-nav-flashcards" class="mob-nav-btn flex flex-col items-center text-slate-400 text-xs py-1 px-2 rounded-lg">
+            <i class="fa-solid fa-clone text-base mb-0.5"></i>
+            <span>Flashcards</span>
+        </button>
+        <button onclick="switchTab('quiz')" id="mob-nav-quiz" class="mob-nav-btn flex flex-col items-center text-slate-400 text-xs py-1 px-2 rounded-lg">
+            <i class="fa-solid fa-circle-question text-base mb-0.5"></i>
+            <span>Quiz</span>
+        </button>
+        <button onclick="switchTab('explorer')" id="mob-nav-explorer" class="mob-nav-btn flex flex-col items-center text-slate-400 text-xs py-1 px-2 rounded-lg">
+            <i class="fa-solid fa-table-cells text-base mb-0.5"></i>
+            <span>Explorador</span>
+        </button>
+        <button onclick="switchTab('guide')" id="mob-nav-guide" class="mob-nav-btn flex flex-col items-center text-slate-400 text-xs py-1 px-2 rounded-lg">
+            <i class="fa-solid fa-book-open text-base mb-0.5"></i>
+            <span>Guía</span>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 pb-24 md:pb-12">
+
+        <!-- TAB 1: DASHBOARD -->
+        <section id="tab-dashboard" class="tab-content space-y-6 animate-fade-in">
+            <!-- Welcome Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-900/40 via-violet-900/30 to-[#141721] border border-indigo-500/20 p-6 lg:p-8">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 mb-4">
+                        <i class="fa-solid fa-star mr-1.5"></i> Especial para Hispanohablantes
+                    </span>
+                    <h2 class="text-2xl lg:text-4xl font-bold tracking-tight text-white mb-3">
+                        Aprende el Alfabeto Tailandés sin depender del inglés
+                    </h2>
+                    <p class="text-slate-300 text-sm lg:text-base leading-relaxed mb-6">
+                        Olvídate de las guías confusas en inglés. Aquí aprendes la fonética adaptada exactamente a tu lengua materna, con nombres de letras, palabras recordatorias, clases de tono y audios nativos.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="switchTab('flashcards')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/30 flex items-center space-x-2 text-sm">
+                            <i class="fa-solid fa-play"></i>
+                            <span>Iniciar Flashcards</span>
+                        </button>
+                        <button onclick="switchTab('quiz')" class="bg-[#1b1f2d] hover:bg-[#23293b] border border-[#2f364d] text-slate-200 font-medium px-5 py-2.5 rounded-xl transition flex items-center space-x-2 text-sm">
+                            <i class="fa-solid fa-puzzle-piece"></i>
+                            <span>Probar Quiz</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-[#141721] border border-[#1f2433] rounded-2xl p-4 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-font"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-white">44</div>
+                        <div class="text-xs text-slate-400">Consonantes Totales</div>
+                    </div>
+                </div>
+                <div class="bg-[#141721] border border-[#1f2433] rounded-2xl p-4 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-white">28</div>
+                        <div class="text-xs text-slate-400">Iniciales Clave</div>
+                    </div>
+                </div>
+                <div class="bg-[#141721] border border-[#1f2433] rounded-2xl p-4 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-white" id="stat-quizzes-taken">0</div>
+                        <div class="text-xs text-slate-400">Quizzes Realizados</div>
+                    </div>
+                </div>
+                <div class="bg-[#141721] border border-[#1f2433] rounded-2xl p-4 flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-violet-500/10 text-violet-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-fire"></i>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-white" id="stat-streak">1</div>
+                        <div class="text-xs text-slate-400">Racha de Estudio</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Access Modules -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Flashcard Card -->
+                <div onclick="switchTab('flashcards')" class="group bg-[#141721] hover:bg-[#181c2a] border border-[#1f2433] hover:border-indigo-500/50 rounded-3xl p-6 transition-all cursor-pointer flex flex-col justify-between shadow-lg">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-clone"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Flashcards Interactivas</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            Desliza y repasa letra por letra. Escucha su pronunciación en tailandés, revisa la clase, palabra asociada y significado en español.
+                        </p>
+                    </div>
+                    <div class="flex items-center text-indigo-400 text-sm font-semibold group-hover:translate-x-1 transition-transform">
+                        <span>Abrir Flashcards</span>
+                        <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </div>
+                </div>
+
+                <!-- Quiz Card -->
+                <div onclick="switchTab('quiz')" class="group bg-[#141721] hover:bg-[#181c2a] border border-[#1f2433] hover:border-emerald-500/50 rounded-3xl p-6 transition-all cursor-pointer flex flex-col justify-between shadow-lg">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-circle-question"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Quiz Dinámico</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            Pon a prueba tu memoria con modos Letra ➔ Nombre y Nombre ➔ Letra. Los fallos regresan al final hasta que los domines.
+                        </p>
+                    </div>
+                    <div class="flex items-center text-emerald-400 text-sm font-semibold group-hover:translate-x-1 transition-transform">
+                        <span>Comenzar Quiz</span>
+                        <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </div>
+                </div>
+
+                <!-- Guide Card -->
+                <div onclick="switchTab('guide')" class="group bg-[#141721] hover:bg-[#181c2a] border border-[#1f2433] hover:border-violet-500/50 rounded-3xl p-6 transition-all cursor-pointer flex flex-col justify-between shadow-lg">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-violet-600/20 text-violet-400 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Guía de Pronunciación</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                            Aprende sobre aspiraciones (KH, TH, PH), nasales (NG), vocales especiales y las 3 clases de consonantes explicadas en español.
+                        </p>
+                    </div>
+                    <div class="flex items-center text-violet-400 text-sm font-semibold group-hover:translate-x-1 transition-transform">
+                        <span>Leer Guía</span>
+                        <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: FLASHCARDS -->
+        <section id="tab-flashcards" class="tab-content hidden space-y-6 animate-fade-in">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-[#141721] border border-[#1f2433] p-4 lg:p-6 rounded-2xl">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-clone text-indigo-400"></i>
+                        <span>Tarjetas de Memoria (Flashcards)</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Practica el trazo, sonido y significado a tu propio ritmo.</p>
+                </div>
+                <!-- Controls -->
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <select id="fc-filter" onchange="filterFlashcards()" class="bg-[#1b1f2d] border border-[#2b3145] text-slate-200 text-sm rounded-xl px-3 py-2 outline-none focus:border-indigo-500">
+                        <option value="all">Todas (44 consonantes)</option>
+                        <option value="group28">28 Iniciales clave</option>
+                        <option value="group14">14 Vigentes</option>
+                        <option value="obsolete">2 Obsoletas</option>
+                        <option value="Media">Clase Media (9)</option>
+                        <option value="Alta">Clase Alta (11)</option>
+                        <option value="Baja">Clase Baja (24)</option>
+                    </select>
+                    <button onclick="shuffleFlashcards()" class="bg-[#1b1f2d] hover:bg-[#242a3d] border border-[#2b3145] text-slate-200 px-3 py-2 rounded-xl text-sm font-medium transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-shuffle text-xs"></i>
+                        <span>Aleatorio</span>
+                    </button>
+                    <label class="flex items-center space-x-2 bg-[#1b1f2d] border border-[#2b3145] px-3 py-2 rounded-xl text-sm cursor-pointer select-none">
+                        <span class="text-xs text-slate-300">Mostrar Transliteración</span>
+                        <input type="checkbox" id="fc-toggle-trans" checked onchange="renderFlashcard()" class="w-4 h-4 rounded text-indigo-600 bg-[#141721] border-slate-600 focus:ring-0">
+                    </label>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-[#1b1f2d] h-2 rounded-full overflow-hidden">
+                <div id="fc-progress" class="bg-indigo-600 h-full transition-all duration-300" style="width: 0%;"></div>
+            </div>
+
+            <!-- Flashcard Main Card Container -->
+            <div class="max-w-xl mx-auto">
+                <div id="flashcard-container" class="bg-[#141721] border border-[#22283a] rounded-3xl p-6 lg:p-10 shadow-2xl relative min-h-[460px] flex flex-col justify-between transition-all">
+                    
+                    <!-- Top metadata -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span id="fc-badge-type" class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Consonante</span>
+                            <span id="fc-badge-class" class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Clase Media</span>
+                        </div>
+                        <span id="fc-counter" class="text-xs text-slate-400 font-mono">1 / 44</span>
+                    </div>
+
+                    <!-- Center Letter & Info -->
+                    <div class="text-center py-6 flex flex-col items-center">
+                        <div id="fc-letter" class="text-8xl lg:text-9xl font-bold text-white thai-font mb-4 drop-shadow-md select-none">ก</div>
+                        
+                        <div id="fc-details" class="space-y-2 transition-all duration-300">
+                            <div class="text-xl font-bold text-indigo-300 tracking-wide" id="fc-word-thai">ก.ไก่</div>
+                            <div class="text-sm font-mono text-slate-400" id="fc-romanization">gor gài</div>
+                            <div class="text-lg font-semibold text-emerald-400" id="fc-meaning">Gallina</div>
+                            <div class="mt-4 p-3 bg-[#1b1f2d] border border-[#282f42] rounded-xl text-xs text-slate-300 max-w-sm mx-auto text-left">
+                                <span class="font-bold text-indigo-400">Guía ES:</span> <span id="fc-pronun-note">G es una k sin soplo (no es g de gato).</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Audio & Actions -->
+                    <div class="space-y-4">
+                        <button onclick="playCurrentFlashcardAudio()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-3 rounded-2xl transition shadow-lg shadow-indigo-600/30 flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-volume-high"></i>
+                            <span>Escuchar Pronunciación</span>
+                        </button>
+
+                        <div class="flex items-center justify-between pt-2">
+                            <button onclick="prevFlashcard()" class="px-5 py-2.5 rounded-xl bg-[#1b1f2d] hover:bg-[#252b3d] border border-[#2b3145] text-slate-200 text-sm font-medium transition flex items-center space-x-2">
+                                <i class="fa-solid fa-arrow-left"></i>
+                                <span>Anterior</span>
+                            </button>
+                            <button onclick="nextFlashcard()" class="px-5 py-2.5 rounded-xl bg-[#1b1f2d] hover:bg-[#252b3d] border border-[#2b3145] text-slate-200 text-sm font-medium transition flex items-center space-x-2">
+                                <span>Siguiente</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: QUIZ -->
+        <section id="tab-quiz" class="tab-content hidden space-y-6 animate-fade-in">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-[#141721] border border-[#1f2433] p-4 lg:p-6 rounded-2xl">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-circle-question text-emerald-400"></i>
+                        <span>Quiz Interactivo Poxi</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Evalúa tu conocimiento. ¡Las letras que falles volverán al final!</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <select id="quiz-mode" class="bg-[#1b1f2d] border border-[#2b3145] text-slate-200 text-sm rounded-xl px-3 py-2 outline-none focus:border-emerald-500">
+                        <option value="letter-to-name">Letra ➔ Nombre / Significado</option>
+                        <option value="name-to-letter">Significado / Nombre ➔ Letra</option>
+                    </select>
+                    <button onclick="startQuiz()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-4 py-2 rounded-xl text-sm transition shadow-lg shadow-emerald-600/30">
+                        Reiniciar Quiz
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Card Box -->
+            <div class="max-w-xl mx-auto bg-[#141721] border border-[#22283a] rounded-3xl p-6 lg:p-8 shadow-2xl relative min-h-[420px] flex flex-col justify-between">
+                
+                <!-- Quiz Header stats -->
+                <div class="flex items-center justify-between text-xs text-slate-400">
+                    <span id="quiz-progress-text">Pregunta 1 de 10</span>
+                    <span id="quiz-score-text" class="font-semibold text-emerald-400">Aciertos: 0</span>
+                </div>
+
+                <!-- Quiz Question Area -->
+                <div class="py-6 text-center">
+                    <div id="quiz-question-prompt" class="text-sm font-medium text-slate-300 mb-4">¿Cuál es el nombre de esta letra?</div>
+                    <div id="quiz-target-display" class="text-7xl font-bold text-white thai-font mb-6">ก</div>
+                </div>
+
+                <!-- Options Grid -->
+                <div id="quiz-options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                    <!-- Dynamic options injected here -->
+                </div>
+
+                <!-- Next Question Button / Feedback -->
+                <div id="quiz-footer-area" class="pt-4 border-t border-[#1f2433] flex items-center justify-between">
+                    <div id="quiz-feedback-msg" class="text-sm font-medium"></div>
+                    <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-xl text-sm font-medium transition">
+                        Siguiente <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: EXPLORER (CATEGORÍAS) -->
+        <section id="tab-explorer" class="tab-content hidden space-y-6 animate-fade-in">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-[#141721] border border-[#1f2433] p-4 lg:p-6 rounded-2xl">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-table-cells text-violet-400"></i>
+                        <span>Explorador de Consonantes</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Busca y filtra entre las 44 letras tailandesas.</p>
+                </div>
+                <!-- Search & Filters -->
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-xs text-slate-400"></i>
+                        <input type="text" id="explorer-search" oninput="filterExplorer()" placeholder="Buscar letra, gallina..." class="bg-[#1b1f2d] border border-[#2b3145] text-slate-200 text-sm rounded-xl pl-9 pr-4 py-2 outline-none focus:border-violet-500 w-full md:w-64">
+                    </div>
+                    <select id="explorer-filter-class" onchange="filterExplorer()" class="bg-[#1b1f2d] border border-[#2b3145] text-slate-200 text-sm rounded-xl px-3 py-2 outline-none focus:border-violet-500">
+                        <option value="all">Todas las Clases</option>
+                        <option value="Media">Clase Media (9)</option>
+                        <option value="Alta">Clase Alta (11)</option>
+                        <option value="Baja">Clase Baja (24)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Grid of Consonants -->
+            <div id="explorer-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- TAB 5: PRONUNCIATION GUIDE -->
+        <section id="tab-guide" class="tab-content hidden space-y-8 animate-fade-in max-w-4xl mx-auto">
+            <!-- Header Guide -->
+            <div class="bg-[#141721] border border-[#1f2433] rounded-3xl p-6 lg:p-8 space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 rounded-2xl bg-violet-600/20 text-violet-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Guía Fonética para Hispanohablantes</h2>
+                        <p class="text-xs text-slate-400">Basado en el manual 'Poxi Aprende Thai'</p>
+                    </div>
+                </div>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Aprender tailandés desde el español requiere entender que los sonidos no se comportan como en inglés. Aquí te explicamos las claves fundamentales para dominar la pronunciación sin rodeos.
+                </p>
+            </div>
+
+            <!-- Guide Sections Accordion/Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 1. Aspirations -->
+                <div class="bg-[#141721] border border-[#1f2433] rounded-2xl p-6 space-y-3">
+                    <div class="flex items-center space-x-3 text-indigo-400 font-bold text-lg">
+                        <i class="fa-solid fa-wind"></i>
+                        <span>1. Aspiraciones (KH, TH, PH)</span>
+                    </div>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        En tailandés, las letras marcadas como <strong class="text-white">KH, TH y PH</strong> se pronuncian expulsando un pequeño golpe de aire al soltar el sonido.
+                    </p>
+                    <ul class="text-xs text-slate-400 space-y-1.5 pl-4 list-disc">
+                        <li><strong class="text-slate-200">PH:</strong> Nunca se lee como la <strong class="text-slate-200">f</strong> de foca; es una <strong class="text-slate-200">p</strong> con aire.</li>
+                        <li><strong class="text-slate-200">TH:</strong> No es la z española ni la th inglesa; es una <strong class="text-slate-200">t</strong> aspirada.</li>
+                    </ul>
+                </div>
+
+                <!-- 2. G and J values -->
+                <div class="bg-[#141721] border border-[#1f2433] rounded-2xl p-6 space-y-3">
+                    <div class="flex items-center space-x-3 text-emerald-400 font-bold text-lg">
+                        <i class="fa-solid fa-volume-high"></i>
+                        <span>2. G y J sin acento inglés</span>
+                    </div>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Para hispanohablantes, las etiquetas latinas son simples pistas orientativas:
+                    </p>
+                    <ul class="text-xs text-slate-400 space-y-1.5 pl-4 list-disc">
+                        <li><strong class="text-slate-200">G (como en ก ไก่):</strong> Es una <strong class="text-slate-200">k suave</strong> sin soplo fuerte. No es la g de "gato".</li>
+                        <li><strong class="text-slate-200">J (como en จ จาน):</strong> Se acerca a una <strong class="text-slate-200">ch suave</strong> sin soplo. No es la jota española ni la j inglesa.</li>
+                    </ul>
+                </div>
+
+                <!-- 3. Nasals & Semivowels -->
+                <div class="bg-[#141721] border border-[#1f2433] rounded-2xl p-6 space-y-3">
+                    <div class="flex items-center space-x-3 text-amber-400 font-bold text-lg">
+                        <i class="fa-solid fa-headphones"></i>
+                        <span>3. Sonidos Nasales y Semivocales</span>
+                    </div>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        El tailandés utiliza sonidos nasales puros y deslizamientos vocálicos muy definidos:
+                    </p>
+                    <ul class="text-xs text-slate-400 space-y-1.5 pl-4 list-disc">
+                        <li><strong class="text-slate-200">NG (ง.งู):</strong> Es un único sonido nasal, como la 'n' de "banco". No añadas vocal delante.</li>
+                        <li><strong class="text-slate-200">Y / W:</strong> Se aproximan a la <strong class="text-slate-200">y</strong> de yes y la <strong class="text-slate-200">w</strong> de water, fluidas hacia la siguiente vocal.</li>
+                    </ul>
+                </div>
+
+                <!-- 4. The 3 Classes -->
+                <div class="bg-[#141721] border border-[#1f2433] rounded-2xl p-6 space-y-3">
+                    <div class="flex items-center space-x-3 text-violet-400 font-bold text-lg">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>4. Las Tres Clases de Consonantes</span>
+                    </div>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Las 44 consonantes se dividen en tres clases que determinan el tono de la sílaba:
+                    </p>
+                    <ul class="text-xs text-slate-400 space-y-1.5 pl-4 list-disc">
+                        <li><strong class="text-emerald-400">Clase Media (9):</strong> ก จ ฎ ฏ ด ต บ ป อ</li>
+                        <li><strong class="text-indigo-400">Clase Alta (11):</strong> ข ฃ ฉ ฐ ถ ผ ฝ ศ ษ ส ห</li>
+                        <li><strong class="text-amber-400">Clase Baja (24):</strong> ค ฅ ฆ ง ช ซ ฌ ญ ฑ ฒ ณ ท ธ น พ ฟ ภ ม ย ร ล ว ฬ ฮ</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal for Explorer Letter Detail -->
+    <div id="letter-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-[#141721] border border-[#282f45] rounded-3xl max-w-md w-full p-6 lg:p-8 relative shadow-2xl animate-fade-in">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white w-8 h-8 rounded-full bg-[#1b1f2d] flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modal-content" class="text-center space-y-4">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Complete dataset of 44 Thai consonants based on Poxi Aprende Thai PDF
+        const consonants = [
+            { id: 1, thai: "ก", name: "ก.ไก่", roman: "gor gài", meaning: "Gallina", class: "Media", group: "group28", lat: "G / K suave", note: "K sin soplo fuerte. No es la G de gato." },
+            { id: 2, thai: "ข", name: "ข.ไข่", roman: "khor khài", meaning: "Huevo", class: "Alta", group: "group28", lat: "KH", note: "K aspirada con golpe de aire." },
+            { id: 3, thai: "ฃ", name: "ข.ขวด", roman: "khor khùat", meaning: "Botella", class: "Alta", group: "obsolete", lat: "KH", note: "Letra obsoleta (hoy se escribe ขวด con ข)." },
+            { id: 4, thai: "ค", name: "ค.ควาย", roman: "khor khwaai", meaning: "Búfalo", class: "Baja", group: "group28", lat: "KH", note: "K aspirada de clase baja." },
+            { id: 5, thai: "ฅ", name: "ฅ.คน", roman: "khor khon", meaning: "Persona", class: "Baja", group: "obsolete", lat: "KH", note: "Letra obsoleta (hoy se escribe คน con ค)." },
+            { id: 6, thai: "ฆ", name: "ฆ.ระฆัง", roman: "khor rá-khang", meaning: "Campana / Nube", class: "Baja", group: "group14", lat: "KH", note: "K aspirada vigente en vocabulario culto." },
+            { id: 7, thai: "ง", name: "ง.งู", roman: "ngor nguu", meaning: "Serpiente", class: "Baja", group: "group28", lat: "NG", note: "Sonido nasal puro como la n de banco." },
+            { id: 8, thai: "จ", name: "จ.จาน", roman: "jor jaan", meaning: "Plato", class: "Media", group: "group28", lat: "J (Ch suave)", note: "Ch sin aspiración fuerte." },
+            { id: 9, thai: "ฉ", name: "ฉ.ฉิ่ง", roman: "chòr chìng", meaning: "Platillos pequeños", class: "Alta", group: "group28", lat: "CH", note: "Ch aspirada de clase alta." },
+            { id: 10, thai: "ช", name: "ช.ช้าง", roman: "chor cháang", meaning: "Elefante", class: "Baja", group: "group28", lat: "CH", note: "Ch aspirada de clase baja." },
+            { id: 11, thai: "ซ", name: "ซ.โซ่", roman: "sor sôo", meaning: "Cadena", class: "Baja", group: "group28", lat: "S", note: "Sonido S suave." },
+            { id: 12, thai: "ฌ", name: "ฌ.เฌอ", roman: "chor choe", meaning: "Árbol (literario)", class: "Baja", group: "group14", lat: "CH", note: "Ch aspirada en voz literaria." },
+            { id: 13, thai: "ญ", name: "ญ.หญิง", roman: "yor ying", meaning: "Mujer", class: "Baja", group: "group14", lat: "Y", note: "Sonido Y inicial." },
+            { id: 14, thai: "ฎ", name: "ฎ.ชฎา", roman: "dor chá-daa", meaning: "Tocado ceremonial", class: "Media", group: "group14", lat: "D", note: "Sonido D de clase media." },
+            { id: 15, thai: "ฏ", name: "ฏ.ปฏิก", roman: "tor pà-tàk", meaning: "Aguijada", class: "Media", group: "group14", lat: "T", note: "T sin aspiración de clase media." },
+            { id: 16, thai: "ฐ", name: "ฐ.ฐาน", roman: "thor thăan", meaning: "Base o pedestal", class: "Alta", group: "group14", lat: "TH", note: "T aspirada de clase alta." },
+            { id: 17, thai: "ฑ", name: "ฑ.มณโฑ", roman: "thor mon-thoo", meaning: "Montho (literario)", class: "Baja", group: "group14", lat: "TH", note: "T aspirada de clase baja." },
+            { id: 18, thai: "ฒ", name: "ฒ.ผู้เฒ่า", roman: "thor phûu-thâo", meaning: "Persona anciana", class: "Baja", group: "group14", lat: "TH", note: "T aspirada de clase baja." },
+            { id: 19, thai: "ณ", name: "ณ.เณร", roman: "nor neen", meaning: "Monje novicio / Usted", class: "Baja", group: "group14", lat: "N", note: "Sonido N nasal." },
+            { id: 20, thai: "ด", name: "ด.เด็ก", roman: "dor dèk", meaning: "Niño o niña", class: "Media", group: "group28", lat: "D", note: "Sonido D claro." },
+            { id: 21, thai: "ต", name: "ต.เต่า", roman: "tor tào", meaning: "Tortuga", class: "Media", group: "group28", lat: "T", note: "T sin aspiración." },
+            { id: 22, thai: "ถ", name: "ถ.ถุง", roman: "thor thùng", meaning: "Bolsa", class: "Alta", group: "group28", lat: "TH", note: "T aspirada de clase alta." },
+            { id: 23, thai: "ท", name: "ท.ทหาร", roman: "thor thá-hăan", meaning: "Soldado", class: "Baja", group: "group28", lat: "TH", note: "T aspirada de clase baja." },
+            { id: 24, thai: "ธ", name: "ธ.ธง", roman: "thor thong", meaning: "Bandera", class: "Baja", group: "group14", lat: "TH", note: "T aspirada de clase baja." },
+            { id: 25, thai: "น", name: "น.หนู", roman: "nor nŭu", meaning: "Ratón", class: "Baja", group: "group28", lat: "N", note: "Sonido N." },
+            { id: 26, thai: "บ", name: "บ.ใบไม้", roman: "bor bai-máai", meaning: "Hoja", class: "Media", group: "group28", lat: "B", note: "Sonido B suave." },
+            { id: 27, thai: "ป", name: "ป.ปลา", roman: "por plaa", meaning: "Pez", class: "Media", group: "group28", lat: "P", note: "P sin aspiración." },
+            { id: 28, thai: "ผ", name: "ผ.ผึ้ง", roman: "phòr phùng", meaning: "Abeja", class: "Alta", group: "group28", lat: "PH", note: "P aspirada de clase alta." },
+            { id: 29, thai: "ฝ", name: "ฝ.ฝา", roman: "fǒr fǎa", meaning: "Tapa", class: "Alta", group: "group28", lat: "F", note: "Sonido F de clase alta." },
+            { id: 30, thai: "พ", name: "พ.พาน", roman: "phor phaan", meaning: "Bandeja ceremonial", class: "Baja", group: "group28", lat: "PH", note: "P aspirada de clase baja." },
+            { id: 31, thai: "ฟ", name: "ฟ.ฟัน", roman: "for fan", meaning: "Dientes", class: "Baja", group: "group28", lat: "F", note: "Sonido F." },
+            { id: 32, thai: "ภ", name: "ภ.สำเภา", roman: "phor săm-phao", meaning: "Barco de vela", class: "Baja", group: "group14", lat: "PH", note: "P aspirada de clase baja." },
+            { id: 33, thai: "ม", name: "ม.ม้า", roman: "mor máa", meaning: "Caballo", class: "Baja", group: "group28", lat: "M", note: "Sonido M." },
+            { id: 34, thai: "ย", name: "ย.ยักษ์", roman: "yor yák", meaning: "Gigante mitológico", class: "Baja", group: "group28", lat: "Y", note: "Sonido Y." },
+            { id: 35, thai: "ร", name: "ร.เรือ", roman: "ror rua", meaning: "Barco", class: "Baja", group: "group28", lat: "R", note: "Sonido R." },
+            { id: 36, thai: "ล", name: "ล.ลิง", roman: "lor ling", meaning: "Mono", class: "Baja", group: "group28", lat: "L", note: "Sonido L." },
+            { id: 37, thai: "ว", name: "ว.แหวน", roman: "wor wăen", meaning: "Anillo", class: "Baja", group: "group28", lat: "W", note: "Sonido W." },
+            { id: 38, thai: "ศ", name: "ศ.ศาลา", roman: "sor săa-laa", meaning: "Pabellón", class: "Alta", group: "group14", lat: "S", note: "Sonido S de clase alta." },
+            { id: 39, thai: "ษ", name: "ษ.ฤๅษี", roman: "sõr ruu-sii", meaning: "Ermitaño", class: "Alta", group: "group14", lat: "S", note: "Sonido S de clase alta." },
+            { id: 40, thai: "ส", name: "ส.เสือ", roman: "sor sŭa", meaning: "Tigre", class: "Alta", group: "group28", lat: "S", note: "Sonido S de clase alta." },
+            { id: 41, thai: "ห", name: "ห.หีบ", roman: "hǒr hìip", meaning: "Cofre", class: "Alta", group: "group28", lat: "H", note: "H aspirada clara." },
+            { id: 42, thai: "ฬ", name: "ฬ.จุฬา", roman: "lor chù-laa", meaning: "Cometa tradicional", class: "Baja", group: "group14", lat: "L", note: "Sonido L de clase baja." },
+            { id: 43, thai: "อ", name: "อ.อ่าง", roman: "or àang", meaning: "Palangana / Soporte", class: "Media", group: "group28", lat: "O / Soporte", note: "Funciona como soporte vocálico inicial." },
+            { id: 44, thai: "ฮ", name: "ฮ.นอกฮูก", roman: "hor nók-hûuk", meaning: "Búho", class: "Baja", group: "group28", lat: "H", note: "H aspirada de clase baja." }
+        ];
+
+        // App state
+        let currentTab = 'dashboard';
+        let fcList = [...consonants];
+        let fcIndex = 0;
+        let quizzesTaken = 0;
+        let streakCount = 1;
+
+        // Quiz State
+        let quizQueue = [];
+        let quizCurrentIndex = 0;
+        let quizScore = 0;
+        let quizActiveItem = null;
+
+        // --- ENHANCED AUDIO SYSTEM (Web Speech API + Web Audio Fallback) ---
+        let thVoices = [];
+
+        function initVoices() {
+            if ('speechSynthesis' in window) {
+                const loadVoices = () => {
+                    const voices = window.speechSynthesis.getVoices();
+                    thVoices = voices.filter(v => v.lang.includes('th') || v.lang.includes('TH'));
+                };
+                loadVoices();
+                if (speechSynthesis.onvoiceschanged !== undefined) {
+                    speechSynthesis.onvoiceschanged = loadVoices;
+                }
+            }
+        }
+        initVoices();
+
+        function playAudio(text, lang = 'th-TH') {
+            // Check Web Speech API support
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Cancel any ongoing speech
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.75; // Slightly slower for clear learning
+                utterance.pitch = 1.0;
+
+                // Assign Thai voice if explicitly found
+                if (thVoices.length > 0) {
+                    utterance.voice = thVoices[0];
+                }
+
+                // Handler if TTS fails or voice is missing in browser
+                utterance.onerror = function() {
+                    fallbackSynthesizeSound(text);
+                };
+
+                window.speechSynthesis.speak(utterance);
+
+                // Check if voices loaded or if synthesis actually plays; fallback if needed
+                setTimeout(() => {
+                    if (!window.speechSynthesis.speaking && thVoices.length === 0) {
+                        fallbackSynthesizeSound(text);
+                    }
+                }, 250);
+            } else {
+                fallbackSynthesizeSound(text);
+            }
+        }
+
+        // Fallback Audio Generator using Web Audio API for devices without Thai Speech Engine
+        function fallbackSynthesizeSound(text) {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                
+                // Play a friendly acoustic tone pair representing the phonetic sound
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                
+                // Frequency variation based on character code to give distinct acoustic feel for each letter
+                const charCode = text.charCodeAt(0) || 3500;
+                const freq = 220 + ((charCode % 30) * 15);
+                
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq * 1.25, ctx.currentTime + 0.3);
+
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + 0.4);
+            } catch (e) {
+                console.log("Audio play unavailable", e);
+            }
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            currentTab = tabId;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            // Update Desktop Nav
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.className = "nav-btn px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center space-x-2 text-slate-400 hover:text-white hover:bg-[#202433]";
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.className = "nav-btn px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center space-x-2 bg-indigo-600 text-white shadow-md shadow-indigo-600/20";
+            }
+
+            // Update Mobile Nav
+            document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+                btn.className = "mob-nav-btn flex flex-col items-center text-slate-400 text-xs py-1 px-2 rounded-lg";
+            });
+            const activeMob = document.getElementById(`mob-nav-${tabId}`);
+            if (activeMob) {
+                activeMob.className = "mob-nav-btn flex flex-col items-center text-indigo-400 text-xs py-1 px-2 rounded-lg font-semibold";
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (tabId === 'flashcards') {
+                renderFlashcard();
+            } else if (tabId === 'quiz') {
+                startQuiz();
+            } else if (tabId === 'explorer') {
+                renderExplorer(consonants);
+            }
+        }
+
+        // Text to Speech Helper
+        function playAudio(text, lang = 'th-TH') {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.8;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // --- FLASHCARDS LOGIC ---
+        function filterFlashcards() {
+            const filterVal = document.getElementById('fc-filter').value;
+            if (filterVal === 'all') {
+                fcList = [...consonants];
+            } else if (filterVal === 'group28') {
+                fcList = consonants.filter(c => c.group === 'group28');
+            } else if (filterVal === 'group14') {
+                fcList = consonants.filter(c => c.group === 'group14');
+            } else if (filterVal === 'obsolete') {
+                fcList = consonants.filter(c => c.group === 'obsolete');
+            } else {
+                fcList = consonants.filter(c => c.class === filterVal);
+            }
+            fcIndex = 0;
+            renderFlashcard();
+        }
+
+        function shuffleFlashcards() {
+            fcList.sort(() => Math.random() - 0.5);
+            fcIndex = 0;
+            renderFlashcard();
+        }
+
+        function renderFlashcard() {
+            if (fcList.length === 0) return;
+            const item = fcList[fcIndex];
+            
+            document.getElementById('fc-counter').innerText = `${fcIndex + 1} / ${fcList.length}`;
+            const progressPercent = ((fcIndex + 1) / fcList.length) * 100;
+            document.getElementById('fc-progress').style.width = `${progressPercent}%`;
+
+            document.getElementById('fc-letter').innerText = item.thai;
+            document.getElementById('fc-word-thai').innerText = item.name;
+            document.getElementById('fc-meaning').innerText = item.meaning;
+            document.getElementById('fc-pronun-note').innerText = item.note;
+
+            const showTrans = document.getElementById('fc-toggle-trans').checked;
+            const romEl = document.getElementById('fc-romanization');
+            if (showTrans) {
+                romEl.innerText = item.roman;
+                romEl.classList.remove('hidden');
+            } else {
+                romEl.classList.add('hidden');
+            }
+
+            // Badges
+            const classBadge = document.getElementById('fc-badge-class');
+            classBadge.innerText = `Clase ${item.class}`;
+            if (item.class === 'Media') classBadge.className = 'px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+            else if (item.class === 'Alta') classBadge.className = 'px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30';
+            else classBadge.className = 'px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30';
+
+            const typeBadge = document.getElementById('fc-badge-type');
+            if (item.group === 'obsolete') {
+                typeBadge.innerText = 'Obsoleta';
+                typeBadge.className = 'px-3 py-1 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30';
+            } else {
+                typeBadge.innerText = 'Consonante';
+                typeBadge.className = 'px-3 py-1 rounded-full text-xs font-semibold bg-violet-500/20 text-violet-300 border border-violet-500/30';
+            }
+        }
+
+        function nextFlashcard() {
+            fcIndex = (fcIndex + 1) % fcList.length;
+            renderFlashcard();
+        }
+
+        function prevFlashcard() {
+            fcIndex = (fcIndex - 1 + fcList.length) % fcList.length;
+            renderFlashcard();
+        }
+
+        function playCurrentFlashcardAudio() {
+            if (fcList.length > 0) {
+                const item = fcList[fcIndex];
+                playAudio(item.thai, 'th-TH');
+            }
+        }
+
+        // --- QUIZ LOGIC ---
+        function startQuiz() {
+            quizzesTaken++;
+            document.getElementById('stat-quizzes-taken').innerText = quizzesTaken;
+            // Create a shuffled copy of 10 items for the quiz
+            quizQueue = [...consonants].sort(() => Math.random() - 0.5).slice(0, 10);
+            quizCurrentIndex = 0;
+            quizScore = 0;
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (quizCurrentIndex >= quizQueue.length) {
+                // Quiz Complete
+                document.getElementById('quiz-question-prompt').innerText = "¡Quiz Completado con Éxito!";
+                document.getElementById('quiz-target-display').innerHTML = `<i class="fa-solid fa-award text-emerald-400 text-6xl mb-2"></i>`;
+                document.getElementById('quiz-options-grid').innerHTML = `
+                    <div class="col-span-2 text-center py-4 bg-[#1b1f2d] rounded-2xl border border-[#2b3145]">
+                        <p class="text-slate-300 text-sm mb-2">Aciertos finales: <strong class="text-emerald-400">${quizScore} / ${quizQueue.length}</strong></p>
+                        <button onclick="startQuiz()" class="mt-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium px-6 py-2.5 rounded-xl text-sm transition">
+                            Jugar Nuevamente
+                        </button>
+                    </div>
+                `;
+                document.getElementById('quiz-footer-area').classList.add('hidden');
+                return;
+            }
+
+            document.getElementById('quiz-footer-area').classList.remove('hidden');
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+            document.getElementById('quiz-feedback-msg').innerText = '';
+
+            document.getElementById('quiz-progress-text').innerText = `Pregunta ${quizCurrentIndex + 1} de ${quizQueue.length}`;
+            document.getElementById('quiz-score-text').innerText = `Aciertos: ${quizScore}`;
+
+            quizActiveItem = quizQueue[quizCurrentIndex];
+            const mode = document.getElementById('quiz-mode').value;
+
+            document.getElementById('quiz-target-display').innerText = quizActiveItem.thai;
+            if (mode === 'letter-to-name') {
+                document.getElementById('quiz-question-prompt').innerText = "¿Cuál es la palabra asociada / significado de esta letra?";
+            } else {
+                document.getElementById('quiz-question-prompt').innerText = `¿Qué letra corresponde a: "${quizActiveItem.name} - ${quizActiveItem.meaning}"?`;
+                document.getElementById('quiz-target-display').innerText = quizActiveItem.name;
+            }
+
+            // Generate options (1 correct, 3 distractors)
+            let distractors = consonants.filter(c => c.id !== quizActiveItem.id).sort(() => Math.random() - 0.5).slice(0, 3);
+            let options = [...distractors, quizActiveItem].sort(() => Math.random() - 0.5);
+
+            let gridHTML = '';
+            options.forEach(opt => {
+                let labelText = (mode === 'letter-to-name') ? `${opt.name} (${opt.meaning})` : opt.thai;
+                let thaiClass = (mode === 'letter-to-name') ? '' : 'thai-font text-3xl';
+                gridHTML += `
+                    <button onclick="checkQuizAnswer(${opt.id}, this)" data-id="${opt.id}" class="quiz-opt-btn bg-[#1b1f2d] hover:bg-[#252b3d] border border-[#2b3145] hover:border-indigo-500 text-slate-200 font-medium p-4 rounded-2xl transition text-center ${thaiClass}">
+                        ${labelText}
+                    </button>
+                `;
+            });
+            document.getElementById('quiz-options-grid').innerHTML = gridHTML;
+        }
+
+        function checkQuizAnswer(selectedId, btnElement) {
+            // Disable all options
+            const buttons = document.querySelectorAll('.quiz-opt-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            const feedbackMsg = document.getElementById('quiz-feedback-msg');
+            if (selectedId === quizActiveItem.id) {
+                btnElement.className = "quiz-opt-btn bg-emerald-600/30 border border-emerald-500 text-emerald-200 font-medium p-4 rounded-2xl text-center";
+                feedbackMsg.innerHTML = `<span class="text-emerald-400 font-semibold"><i class="fa-solid fa-check mr-1"></i> ¡Correcto!</span>`;
+                quizScore++;
+                playAudio(quizActiveItem.thai, 'th-TH');
+            } else {
+                btnElement.className = "quiz-opt-btn bg-rose-600/30 border border-rose-500 text-rose-200 font-medium p-4 rounded-2xl text-center";
+                feedbackMsg.innerHTML = `<span class="text-rose-400 font-semibold"><i class="fa-solid fa-xmark mr-1"></i> Incorrecto. Era: ${quizActiveItem.name} (${quizActiveItem.meaning})</span>`;
+                // Add missed item back to the end of the queue (as in Poxi app)
+                quizQueue.push(quizActiveItem);
+            }
+
+            document.getElementById('quiz-score-text').innerText = `Aciertos: ${quizScore}`;
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            quizCurrentIndex++;
+            loadQuizQuestion();
+        }
+
+        // --- EXPLORER LOGIC ---
+        function renderExplorer(list) {
+            const grid = document.getElementById('explorer-grid');
+            let html = '';
+            list.forEach(item => {
+                let badgeColor = item.class === 'Media' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : (item.class === 'Alta' ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' : 'bg-amber-500/20 text-amber-300 border-amber-500/30');
+                html += `
+                    <div onclick="openLetterModal(${item.id})" class="bg-[#141721] hover:bg-[#1a1e2b] border border-[#1f2433] hover:border-indigo-500/50 rounded-2xl p-4 flex flex-col items-center justify-between cursor-pointer transition-all group shadow-sm">
+                        <div class="w-full flex justify-between items-center mb-2">
+                            <span class="text-[10px] px-2 py-0.5 rounded-full border ${badgeColor}">Clase ${item.class}</span>
+                            <span class="text-[10px] text-slate-500 font-mono">#${item.id}</span>
+                        </div>
+                        <div class="text-5xl font-bold text-white thai-font my-2 group-hover:scale-110 transition-transform">${item.thai}</div>
+                        <div class="text-center">
+                            <div class="text-xs font-bold text-indigo-300 truncate max-w-[110px]">${item.name}</div>
+                            <div class="text-[11px] text-slate-400 truncate max-w-[110px]">${item.meaning}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        function filterExplorer() {
+            const query = document.getElementById('explorer-search').value.toLowerCase();
+            const classVal = document.getElementById('explorer-filter-class').value;
+
+            let filtered = consonants.filter(item => {
+                const matchesQuery = item.thai.includes(query) || item.name.toLowerCase().includes(query) || item.meaning.toLowerCase().includes(query) || item.roman.toLowerCase().includes(query);
+                const matchesClass = (classVal === 'all' || item.class === classVal);
+                return matchesQuery && matchesClass;
+            });
+            renderExplorer(filtered);
+        }
+
+        // --- MODAL LOGIC ---
+        function openLetterModal(id) {
+            const item = consonants.find(c => c.id === id);
+            if (!item) return;
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="text-7xl font-bold text-white thai-font my-2">${item.thai}</div>
+                <div class="space-y-1">
+                    <div class="text-xl font-bold text-indigo-300">${item.name}</div>
+                    <div class="text-sm font-mono text-slate-400">${item.roman}</div>
+                    <div class="text-lg font-semibold text-emerald-400">${item.meaning}</div>
+                </div>
+                <div class="flex justify-center space-x-2 my-2">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/35">Clase ${item.class}</span>
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-violet-500/20 text-violet-300 border border-violet-500/35">Latín: ${item.lat}</span>
+                </div>
+                <div class="p-3 bg-[#1b1f2d] border border-[#282f42] rounded-xl text-xs text-slate-300 text-left">
+                    <span class="font-bold text-indigo-400">Guía de Pronunciación:</span> ${item.note}
+                </div>
+                <button onclick="playAudio('${item.thai}', 'th-TH')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/30 flex items-center justify-center space-x-2 text-sm mt-4">
+                    <i class="fa-solid fa-volume-high"></i>
+                    <span>Escuchar Sonido</span>
+                </button>
+            `;
+
+            const modal = document.getElementById('letter-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('letter-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        // Window load initialisation
+        window.onload = function() {
+            initVoices();
+            renderFlashcard();
+        };
+    </script>
+</body>
+</html>
